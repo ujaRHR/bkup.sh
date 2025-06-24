@@ -21,8 +21,9 @@
 ##### Restore KDE Settings
 ```./bkup.sh --restore /path/to/kde-backup-yyyy-mm-dd-hhmm.tar.gz ```
 
-##### Examples
-```./bkup.sh --backup ~/Backups
+#### Examples
+```
+./bkup.sh --backup ~/Backups
 ./bkup.sh --restore ~/Backups/kde-backup-2025-06-24-1201.tar.gz
 ```
 
