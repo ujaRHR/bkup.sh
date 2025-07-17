@@ -112,13 +112,15 @@ do_restore() {
   tmp_dir=$(mktemp -d)
   print_status "Restoring from: $file"
 
-  (tar -xzf "$file" -C "$tmp_dir") &  
+  sudo -v || { print_error "Sudo auth failed"; exit 1; }
+
+  (tar -xzf "$file" -C "$tmp_dir") &
   show_loader $! "Extracting backup"
 
   if [[ -d "$tmp_dir/home" ]]; then
     (cp -rT "$tmp_dir/home/$HOME" "$HOME") &
     show_loader $! "Restoring user config"
-    
+
     print_ok "User config restored."
   fi
 
@@ -132,6 +134,7 @@ do_restore() {
   sudo rm -rf "$tmp_dir"
   print_ok "Restore complete."
 }
+
 
 # Help Menu
 show_help() {
@@ -163,7 +166,7 @@ if [[ "$1" == "--backup" && -n "$2" ]]; then
   fi
   do_backup "$2"
 elif [[ "$1" == "--restore" && -n "$2" ]]; then
-  if [[ ! -f "$1" ]]; then
+  if [[ ! -f "$2" ]]; then
     print_error "Backup file not found!"
     exit 1
   fi
